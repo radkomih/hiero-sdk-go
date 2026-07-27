@@ -73,6 +73,56 @@ func mirrorNodePostWithRetry(client *Client, url, contentType string, body []byt
 	return resp, err
 }
 
+// mirrorNodeGetWithRetry GETs a mirror node REST endpoint, retrying transport failures and
+// 5xx/429 responses with exponential backoff; 4xx responses are returned as-is. It follows the
+// same contract as mirrorNodePostWithRetry: the caller must close a non-nil Body, and a timeout
+// of 0 disables the per-request timeout.
+func mirrorNodeGetWithRetry(client *Client, url string, maxAttempts uint64, timeout time.Duration) (*http.Response, error) {
+	if maxAttempts == 0 {
+		return nil, errors.New("maxAttempts must be at least 1")
+	}
+
+	httpClient := &http.Client{Timeout: timeout}
+
+	var resp *http.Response
+	var err error
+
+	for attempt := uint64(0); attempt < maxAttempts; attempt++ {
+		resp, err = httpClient.Get(url) // #nosec
+
+		// Success or a non-retryable outcome is terminal; return the raw result.
+		if (err == nil && resp != nil && resp.StatusCode == http.StatusOK) || !mirrorNodeShouldRetry(err, resp) {
+			return resp, err
+		}
+
+		// Retryable, but no point backing off after the last attempt.
+		if attempt == maxAttempts-1 {
+			return resp, err
+		}
+
+		// Discard the retryable response body before the next attempt.
+		if resp != nil {
+			resp.Body.Close()
+		}
+
+		// Exponential backoff capped at 8s; exp is clamped to avoid shift overflow.
+		exp := min(attempt, uint64(5))
+		delayMs := 250.0 * float64(uint64(1)<<exp)
+		if delayMs > 8000 {
+			delayMs = 8000
+		}
+
+		select {
+		case <-client.networkUpdateContext.Done():
+			return nil, client.networkUpdateContext.Err()
+		case <-time.After(time.Duration(delayMs) * time.Millisecond):
+		}
+	}
+
+	// Unreachable: the final iteration always returns.
+	return resp, err
+}
+
 // mirrorNodeShouldRetry reports whether a failed POST should be retried: transport errors
 // and 5xx/429 are transient; 4xx responses are genuine results the caller expects.
 func mirrorNodeShouldRetry(err error, resp *http.Response) bool {
