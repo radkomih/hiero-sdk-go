@@ -106,7 +106,7 @@ func main() {
 		panic(fmt.Sprintf("%v : error getting transfer transaction receipt", err))
 	}
 
-	balance, err := hiero.NewAccountBalanceQuery().
+	balance, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*aliasAccountID).
 		Execute(client)
 	if err != nil {

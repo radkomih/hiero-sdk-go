@@ -116,53 +116,48 @@ func TestUnitAccountBalanceQueryCoverage(t *testing.T) {
 	bal._ToProtobuf()
 }
 
-func TestUnitAccountBalanceQueryMock(t *testing.T) {
+// TestUnitAccountBalanceQueryDeprecatedExecute verifies that Execute returns the deprecation error
+// immediately without any consensus-node call; the mock fails the test on any received request.
+func TestUnitAccountBalanceQueryDeprecatedExecute(t *testing.T) {
 	t.Parallel()
 
-	responses := [][]interface{}{
-		{
-			&services.Response{
-				Response: &services.Response_CryptogetAccountBalance{
-					CryptogetAccountBalance: &services.CryptoGetAccountBalanceResponse{
-						Header: &services.ResponseHeader{NodeTransactionPrecheckCode: services.ResponseCodeEnum_OK, ResponseType: services.ResponseType_COST_ANSWER, Cost: 0},
-						AccountID: &services.AccountID{ShardNum: 0, RealmNum: 0, Account: &services.AccountID_AccountNum{
-							AccountNum: 1800,
-						}},
-						Balance: 2000,
-					},
-				},
-			},
-			&services.Response{
-				Response: &services.Response_CryptogetAccountBalance{
-					CryptogetAccountBalance: &services.CryptoGetAccountBalanceResponse{
-						Header: &services.ResponseHeader{NodeTransactionPrecheckCode: services.ResponseCodeEnum_OK, ResponseType: services.ResponseType_ANSWER_ONLY, Cost: 0},
-						AccountID: &services.AccountID{ShardNum: 0, RealmNum: 0, Account: &services.AccountID_AccountNum{
-							AccountNum: 1800,
-						}},
-						Balance: 2000,
-					},
-				},
-			},
-		},
+	call := func(request *services.Query) *services.Response {
+		t.Error("AccountBalanceQuery.Execute must not make any consensus node calls")
+		return &services.Response{}
 	}
+
+	responses := [][]interface{}{{call}}
 
 	client, server := NewMockClientAndServer(responses)
 	defer server.Close()
 
-	query := NewAccountBalanceQuery().
+	_, err := NewAccountBalanceQuery().
 		SetNodeAccountIDs([]AccountID{{Account: 3}}).
 		SetAccountID(AccountID{Account: 1800}).
-		SetContractID(ContractID{Contract: 3})
+		Execute(client)
 
-	_, err := query.Execute(client)
-	require.NoError(t, err)
+	require.ErrorIs(t, err, errAccountBalanceQueryDeprecated)
+	require.EqualError(t, err, "Deprecated: AccountBalanceQuery is no longer supported. Use MirrorNodeAccountBalanceQuery or the mirror node REST API (GET /api/v1/accounts/{id}) to retrieve account balances.")
+}
+
+// TestUnitAccountBalanceQueryDeprecatedGetCost verifies that GetCost also returns the deprecation
+// error without contacting the network.
+func TestUnitAccountBalanceQueryDeprecatedGetCost(t *testing.T) {
+	t.Parallel()
+
+	_, err := NewAccountBalanceQuery().
+		SetAccountID(AccountID{Account: 1800}).
+		GetCost(nil)
+
+	require.ErrorIs(t, err, errAccountBalanceQueryDeprecated)
 }
 
 func TestUnitAccountBalanceQueryNoClient(t *testing.T) {
 	t.Parallel()
 
+	// Execute now returns the deprecation error before any client/network validation.
 	_, err := NewAccountBalanceQuery().
 		Execute(nil)
 
-	require.ErrorContains(t, err, "client` must be provided and have an _Operator")
+	require.ErrorIs(t, err, errAccountBalanceQueryDeprecated)
 }

@@ -76,9 +76,8 @@ func TestIntegrationTokenTransferTransactionCanExecute(t *testing.T) {
 	_, err = resp.SetValidateStatus(true).GetReceipt(env.Client)
 	require.NoError(t, err)
 
-	_, err = NewAccountBalanceQuery().
+	_, err = NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(env.Client.GetOperatorAccountID()).
-		SetNodeAccountIDs([]AccountID{resp.NodeID}).
 		Execute(env.Client)
 	require.NoError(t, err)
 

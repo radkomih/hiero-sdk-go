@@ -81,13 +81,13 @@ func main() {
 	userAccountID := *userReceipt.AccountID
 
 	// Balances before
-	senderBalanceBefore, err := hiero.NewAccountBalanceQuery().
+	senderBalanceBefore, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(userAccountID).
 		Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error querying user balance", err))
 	}
-	exchangeBalanceBefore, err := hiero.NewAccountBalanceQuery().
+	exchangeBalanceBefore, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(exchangeAccountID).
 		Execute(client)
 	if err != nil {
@@ -141,13 +141,13 @@ func main() {
 	}
 
 	// Step 4: Confirm balances after the transfer.
-	senderBalanceAfter, err := hiero.NewAccountBalanceQuery().
+	senderBalanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(userAccountID).
 		Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error querying user balance after", err))
 	}
-	exchangeBalanceAfter, err := hiero.NewAccountBalanceQuery().
+	exchangeBalanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(exchangeAccountID).
 		Execute(client)
 	if err != nil {

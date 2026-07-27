@@ -35,14 +35,14 @@ func main() {
 	recipientID := hiero.AccountID{Account: 3}
 
 	// Step 1: Check Hbar balance of sender and recipient.
-	senderBalanceBefore, err := hiero.NewAccountBalanceQuery().
+	senderBalanceBefore, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(operatorAccountID).
 		Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error querying sender balance", err))
 	}
 
-	recipientBalanceBefore, err := hiero.NewAccountBalanceQuery().
+	recipientBalanceBefore, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(recipientID).
 		Execute(client)
 	if err != nil {
@@ -75,14 +75,14 @@ func main() {
 	fmt.Printf("Transfer memo: %v\n", record.TransactionMemo)
 
 	// Step 3: Check Hbar balance of sender and recipient after the transfer.
-	senderBalanceAfter, err := hiero.NewAccountBalanceQuery().
+	senderBalanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(operatorAccountID).
 		Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error querying sender balance after", err))
 	}
 
-	recipientBalanceAfter, err := hiero.NewAccountBalanceQuery().
+	recipientBalanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(recipientID).
 		Execute(client)
 	if err != nil {

@@ -474,3 +474,44 @@ func TestUnitClientGetMirrorRestApiBaseUrlLocalHost(t *testing.T) {
 		})
 	}
 }
+
+// TestUnitClientPingReachableNode verifies that Ping succeeds for a reachable node via a
+// transport-level connectivity check, without issuing any consensus-node query (the mock has no
+// queued responses, so any RPC would fail the test).
+func TestUnitClientPingReachableNode(t *testing.T) {
+	t.Parallel()
+
+	client, server := NewMockClientAndServer([][]interface{}{{}})
+	defer server.Close()
+
+	err := client.Ping(AccountID{Account: 3})
+	require.NoError(t, err)
+}
+
+// TestUnitClientPingUnknownNode verifies that Ping returns an error when the requested node is
+// not part of the client's network.
+func TestUnitClientPingUnknownNode(t *testing.T) {
+	t.Parallel()
+
+	client, server := NewMockClientAndServer([][]interface{}{{}})
+	defer server.Close()
+
+	err := client.Ping(AccountID{Account: 99})
+	require.Error(t, err)
+	require.ErrorContains(t, err, "not found in the client's network")
+}
+
+// TestUnitClientPingUnreachableNode verifies that Ping returns an error when the node cannot be
+// reached within the client's gRPC deadline.
+func TestUnitClientPingUnreachableNode(t *testing.T) {
+	t.Parallel()
+
+	client, server := NewMockClientAndServer([][]interface{}{{}})
+	// Close the server so the node is no longer reachable; the connection will never become ready.
+	server.Close()
+	client.SetGrpcDeadline(500 * time.Millisecond)
+
+	err := client.Ping(AccountID{Account: 3})
+	require.Error(t, err)
+	require.ErrorContains(t, err, "is not reachable")
+}

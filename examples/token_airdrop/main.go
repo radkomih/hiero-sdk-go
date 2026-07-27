@@ -200,14 +200,14 @@ func main() {
 	 * Step 5:
 	 * Query to verify alice and bob received the airdrops and carol did not
 	 */
-	aliceBalance, _ := hiero.NewAccountBalanceQuery().
+	aliceBalance, _ := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
 
-	bobBalance, _ := hiero.NewAccountBalanceQuery().
+	bobBalance, _ := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
-	carolBalance, _ := hiero.NewAccountBalanceQuery().
+	carolBalance, _ := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
 
@@ -229,7 +229,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("%v : error claiming tokens", err))
 	}
-	carolBalance, _ = hiero.NewAccountBalanceQuery().
+	carolBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
 	fmt.Println("Carol ft balance after claim: ", carolBalance.Tokens.Get(*tokenID))
@@ -267,14 +267,14 @@ func main() {
 	 * Query to verify alice received the airdrop and bob and carol did not
 	 */
 
-	aliceBalance, _ = hiero.NewAccountBalanceQuery().
+	aliceBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
 
-	bobBalance, _ = hiero.NewAccountBalanceQuery().
+	bobBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
-	carolBalance, _ = hiero.NewAccountBalanceQuery().
+	carolBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
 
@@ -299,7 +299,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("%v : error claiming tokens", err))
 	}
-	bobBalance, _ = hiero.NewAccountBalanceQuery().
+	bobBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*bob).
 		Execute(client)
 	fmt.Println("Bob nft balance after claim: ", bobBalance.Tokens.Get(nftID))
@@ -321,7 +321,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("%v : error canceling tokens", err))
 	}
-	carolBalance, _ = hiero.NewAccountBalanceQuery().
+	carolBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*carol).
 		Execute(client)
 	fmt.Println("Carol nft balance after cancel: ", carolBalance.Tokens.Get(nftID))
@@ -350,7 +350,7 @@ func main() {
 	 * Step 13:
 	 * Query to verify bob no longer has the NFT
 	 */
-	bobBalance, _ = hiero.NewAccountBalanceQuery().
+	bobBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*bob).
 		Execute(client)
 	fmt.Println("Bob nft balance after reject: ", bobBalance.Tokens.Get(nftID))
@@ -359,7 +359,7 @@ func main() {
 	 * Step 13:
 	 * Query to verify the NFT was returned to the Treasury
 	 */
-	treasuryBalance, _ := hiero.NewAccountBalanceQuery().
+	treasuryBalance, _ := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*treasury).
 		Execute(client)
 	fmt.Println("Treasury nft balance after reject: ", treasuryBalance.Tokens.Get(nftID))
@@ -387,7 +387,7 @@ func main() {
 	 * Step 14:
 	 * Query to verify carol no longer has the fungible tokens
 	 */
-	carolBalance, _ = hiero.NewAccountBalanceQuery().
+	carolBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*alice).
 		Execute(client)
 	fmt.Println("Carol ft balance after claim: ", carolBalance.Tokens.Get(*tokenID))
@@ -396,7 +396,7 @@ func main() {
 	 * Step 15:
 	 * Query to verify Treasury received the rejected fungible tokens
 	 */
-	treasuryBalance, _ = hiero.NewAccountBalanceQuery().
+	treasuryBalance, _ = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(*treasury).
 		Execute(client)
 	fmt.Println("Treasury ft balance after reject: ", treasuryBalance.Tokens.Get(*tokenID))

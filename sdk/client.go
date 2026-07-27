@@ -11,6 +11,8 @@ import (
 	"io"
 	"os"
 	"time"
+
+	"google.golang.org/grpc/connectivity"
 )
 
 //go:embed addressbook/mainnet.pb
@@ -749,16 +751,39 @@ func (client *Client) GetOperatorPublicKey() PublicKey {
 	return PublicKey{}
 }
 
-// Ping sends an AccountBalanceQuery to the specified _Node returning nil if no
-// problems occur. Otherwise, an error representing the status of the _Node will
-// be returned.
+// Ping checks the liveness of the given consensus node, returning nil if the node is reachable.
+// Otherwise, an error describing why the node could not be reached is returned.
+//
+// It performs a transport-level gRPC connectivity check, waiting until the channel to the node
+// becomes ready or the client's gRPC deadline elapses. It deliberately avoids the deprecated
+// AccountBalanceQuery.
 func (client *Client) Ping(nodeID AccountID) error {
-	_, err := NewAccountBalanceQuery().
-		SetNodeAccountIDs([]AccountID{nodeID}).
-		SetAccountID(client.GetOperatorAccountID()).
-		Execute(client)
+	node, ok := client.network._GetNodeForAccountID(nodeID)
+	if !ok {
+		return fmt.Errorf("node with account ID %s not found in the client's network", nodeID.String())
+	}
 
-	return err
+	channel, err := node._GetChannel(client.logger)
+	if err != nil {
+		return err
+	}
+	conn := channel.client
+
+	ctx, cancel := context.WithTimeout(context.Background(), client.grpcDeadline)
+	defer cancel()
+
+	// The channel starts idle; Connect kicks off the transport, then we wait for it to be ready.
+	conn.Connect()
+	for {
+		state := conn.GetState()
+		if state == connectivity.Ready {
+			return nil
+		}
+		if !conn.WaitForStateChange(ctx, state) {
+			// Deadline elapsed before the connection became ready.
+			return fmt.Errorf("node %s is not reachable: last connection state was %s", nodeID.String(), state.String())
+		}
+	}
 }
 
 func (client *Client) PingAll() {

@@ -119,7 +119,7 @@ func main() {
 		panic(fmt.Sprintf("%v : Error transferring tokens", err))
 	}
 
-	tokenBalance, err := hiero.NewAccountBalanceQuery().SetAccountID(receiver).Execute(client)
+	tokenBalance, err := hiero.NewMirrorNodeAccountBalanceQuery().SetAccountID(receiver).Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : Error getting balance", err))
 	}
@@ -127,7 +127,7 @@ func main() {
 	fmt.Println("Fungible token balance for receiver account before reject: ", tokenBalance.Tokens.Get(tokenID))
 	fmt.Println("NFT balance for receiver account before reject: ", tokenBalance.Tokens.Get(nftID))
 
-	tokenBalance, err = hiero.NewAccountBalanceQuery().SetAccountID(treasury).Execute(client)
+	tokenBalance, err = hiero.NewMirrorNodeAccountBalanceQuery().SetAccountID(treasury).Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : Error getting balance", err))
 	}
@@ -157,7 +157,7 @@ func main() {
 		panic(fmt.Sprintf("%v : Error rejecting tokens", err))
 	}
 
-	tokenBalance, err = hiero.NewAccountBalanceQuery().SetAccountID(receiver).Execute(client)
+	tokenBalance, err = hiero.NewMirrorNodeAccountBalanceQuery().SetAccountID(receiver).Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : Error getting balance", err))
 	}
@@ -165,7 +165,7 @@ func main() {
 	fmt.Println("Fungible token balance for receiver account after reject: ", tokenBalance.Tokens.Get(tokenID))
 	fmt.Println("NFT balance for receiver account after reject: ", tokenBalance.Tokens.Get(nftID))
 
-	tokenBalance, err = hiero.NewAccountBalanceQuery().SetAccountID(treasury).Execute(client)
+	tokenBalance, err = hiero.NewMirrorNodeAccountBalanceQuery().SetAccountID(treasury).Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : Error getting balance", err))
 	}

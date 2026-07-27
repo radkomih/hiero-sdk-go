@@ -135,10 +135,9 @@ func main() {
 
 	// This query is free
 	// Here we check if transfer transaction actually succeeded
-	balance, err := hiero.NewAccountBalanceQuery().
+	balance, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		// The account ID to check balance of
 		SetAccountID(newAccountID).
-		SetNodeAccountIDs([]hiero.AccountID{transactionResponse.NodeID}).
 		Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error executing account balance query", err))

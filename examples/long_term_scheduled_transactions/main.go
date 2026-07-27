@@ -145,7 +145,7 @@ func main() {
 		Sign the transaction with the other key and verify the transaction executes successfully
 	*/
 
-	accountBalance, err := hiero.NewAccountBalanceQuery().
+	accountBalance, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(alice).
 		Execute(client)
 	if err != nil {
@@ -178,7 +178,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("%v : error getting schedule info", err))
 	}
-	accountBalance, err = hiero.NewAccountBalanceQuery().
+	accountBalance, err = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(alice).
 		Execute(client)
 	if err != nil {
@@ -277,7 +277,7 @@ func main() {
 		Step 9:
 		Verify that the transfer successfully executes roughly at the time of its expiration.
 	*/
-	accountBalance, err = hiero.NewAccountBalanceQuery().
+	accountBalance, err = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(alice).
 		Execute(client)
 	if err != nil {
@@ -291,7 +291,7 @@ func main() {
 		fmt.Printf("Elapsed time: %.1f seconds\r", time.Since(startTime).Seconds())
 	}
 
-	accountBalance, err = hiero.NewAccountBalanceQuery().
+	accountBalance, err = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(alice).
 		Execute(client)
 	if err != nil {

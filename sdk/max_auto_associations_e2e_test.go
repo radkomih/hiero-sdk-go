@@ -133,7 +133,7 @@ func TestLimitedMaxAutoAssociationsFungibleTokensWithManualAssociate(t *testing.
 	require.NoError(t, err)
 
 	// verify the balance of the receiver is 10
-	tokenBalance, err := NewAccountBalanceQuery().SetAccountID(receiver).Execute(env.Client)
+	tokenBalance, err := NewMirrorNodeAccountBalanceQuery().SetAccountID(receiver).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(10), tokenBalance.Tokens.Get(tokenID1))
 }
@@ -271,12 +271,12 @@ func TestUnlimitedMaxAutoAssociationsAllowsToTransferFungibleTokens(t *testing.T
 	require.NoError(t, err)
 
 	// verify the balance of the receivers is 1000
-	tokenBalance, err := NewAccountBalanceQuery().SetAccountID(accountID1).Execute(env.Client)
+	tokenBalance, err := NewMirrorNodeAccountBalanceQuery().SetAccountID(accountID1).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID1))
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID2))
 
-	tokenBalance, err = NewAccountBalanceQuery().SetAccountID(accountID2).Execute(env.Client)
+	tokenBalance, err = NewMirrorNodeAccountBalanceQuery().SetAccountID(accountID2).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID1))
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID2))
@@ -318,7 +318,7 @@ func TestUnlimitedMaxAutoAssociationsAllowsToTransferFungibleTokensWithDecimals(
 	require.NoError(t, err)
 
 	// verify the balance of the receiver is 1000
-	tokenBalance, err := NewAccountBalanceQuery().SetAccountID(accountID).Execute(env.Client)
+	tokenBalance, err := NewMirrorNodeAccountBalanceQuery().SetAccountID(accountID).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID1))
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID2))
@@ -378,7 +378,7 @@ func TestUnlimitedMaxAutoAssociationsAllowsToTransferFromFungibleTokens(t *testi
 	env.Client.SetOperator(env.OperatorID, env.OperatorKey)
 
 	// verify the balance of the receiver is 1000
-	tokenBalance, err := NewAccountBalanceQuery().SetAccountID(accountID).Execute(env.Client)
+	tokenBalance, err := NewMirrorNodeAccountBalanceQuery().SetAccountID(accountID).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID1))
 	assert.Equal(t, uint64(1000), tokenBalance.Tokens.Get(tokenID2))
@@ -460,12 +460,12 @@ func TestUnlimitedMaxAutoAssociationsAllowsToTransferNFTs(t *testing.T) {
 	require.NoError(t, err)
 
 	// verify the balance of the receivers is 2
-	tokenBalance, err := NewAccountBalanceQuery().SetAccountID(accountID1).Execute(env.Client)
+	tokenBalance, err := NewMirrorNodeAccountBalanceQuery().SetAccountID(accountID1).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(2), tokenBalance.Tokens.Get(nftID1))
 	assert.Equal(t, uint64(2), tokenBalance.Tokens.Get(nftID2))
 
-	tokenBalance, err = NewAccountBalanceQuery().SetAccountID(accountID2).Execute(env.Client)
+	tokenBalance, err = NewMirrorNodeAccountBalanceQuery().SetAccountID(accountID2).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(2), tokenBalance.Tokens.Get(nftID1))
 	assert.Equal(t, uint64(2), tokenBalance.Tokens.Get(nftID2))
@@ -533,7 +533,7 @@ func TestUnlimitedMaxAutoAssociationsAllowsToTransferFromNFTs(t *testing.T) {
 	env.Client.SetOperator(env.OperatorID, env.OperatorKey)
 
 	// verify the balance of the receiver is 2
-	tokenBalance, err := NewAccountBalanceQuery().SetAccountID(accountID).Execute(env.Client)
+	tokenBalance, err := NewMirrorNodeAccountBalanceQuery().SetAccountID(accountID).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(2), tokenBalance.Tokens.Get(nftID1))
 	assert.Equal(t, uint64(2), tokenBalance.Tokens.Get(nftID2))
@@ -655,7 +655,7 @@ func TestUnlimitedMaxAutoAssociationsContractAllowsToTransferFungibleTokens(t *t
 	require.NoError(t, err)
 
 	// verify both balances arrived on the contract
-	contractBalance, err := NewAccountBalanceQuery().SetContractID(contractID).Execute(env.Client)
+	contractBalance, err := NewMirrorNodeAccountBalanceQuery().SetContractID(contractID).Execute(env.Client)
 	require.NoError(t, err)
 	assert.Equal(t, uint64(1000), contractBalance.Tokens.Get(tokenID1))
 	assert.Equal(t, uint64(1000), contractBalance.Tokens.Get(tokenID2))

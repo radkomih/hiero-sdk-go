@@ -77,9 +77,8 @@ func TestIntegrationTokenWipeTransactionCanExecute(t *testing.T) {
 	_, err = resp.SetValidateStatus(true).GetReceipt(env.Client)
 	require.NoError(t, err)
 
-	info, err := NewAccountBalanceQuery().
+	info, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(accountID).
-		SetNodeAccountIDs([]AccountID{resp.NodeID}).
 		Execute(env.Client)
 	require.NoError(t, err)
 
@@ -103,9 +102,8 @@ func TestIntegrationTokenWipeTransactionCanExecute(t *testing.T) {
 	_, err = resp.SetValidateStatus(true).GetReceipt(env.Client)
 	require.NoError(t, err)
 
-	info, err = NewAccountBalanceQuery().
+	info, err = NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(accountID).
-		SetNodeAccountIDs([]AccountID{resp.NodeID}).
 		Execute(env.Client)
 	require.NoError(t, err)
 
@@ -483,9 +481,8 @@ func TestIntegrationTokenWipeTransactionNotZeroTokensAtDelete(t *testing.T) {
 	_, err = resp.SetValidateStatus(true).GetReceipt(env.Client)
 	require.NoError(t, err)
 
-	info, err := NewAccountBalanceQuery().
+	info, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(accountID).
-		SetNodeAccountIDs([]AccountID{resp.NodeID}).
 		Execute(env.Client)
 	require.NoError(t, err)
 
@@ -510,9 +507,8 @@ func TestIntegrationTokenWipeTransactionNotZeroTokensAtDelete(t *testing.T) {
 	_, err = resp.SetValidateStatus(true).GetReceipt(env.Client)
 	require.NoError(t, err)
 
-	info, err = NewAccountBalanceQuery().
+	info, err = NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(accountID).
-		SetNodeAccountIDs([]AccountID{resp.NodeID}).
 		Execute(env.Client)
 	require.NoError(t, err)
 

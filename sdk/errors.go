@@ -21,6 +21,12 @@ var errNoClientOrTransactionID = errors.New("`client` must have an `_Operator` o
 var errNoClientOrTransactionIDOrNodeId = errors.New("`client` must be provided or both `nodeId` and `transactionId` must be set") // nolint
 var errClientOperatorSigning = errors.New("`client` must have an `_Operator` to sign with the _Operator")
 var errNoClientProvided = errors.New("`client` must be provided and have an _Operator")
+
+// accountBalanceQueryDeprecatedMessage is the single source of truth for the AccountBalanceQuery
+// deprecation text, shared by the log warning, the Execute/GetCost error, and the doc comments.
+const accountBalanceQueryDeprecatedMessage = "Deprecated: AccountBalanceQuery is no longer supported. Use MirrorNodeAccountBalanceQuery or the mirror node REST API (GET /api/v1/accounts/{id}) to retrieve account balances."
+
+var errAccountBalanceQueryDeprecated = errors.New(accountBalanceQueryDeprecatedMessage) // nolint:staticcheck // ST1005: message is shared user-facing deprecation text
 var errTransactionIsNotFrozen = errors.New("transaction is not frozen")
 var errInnerTransactionShouldBeFrozen = errors.New("inner transaction should be frozen")
 var errFailedToDeserializeBytes = errors.New("failed to deserialize bytes")

@@ -80,7 +80,7 @@ func main() {
 	fmt.Printf("Bob's account: %v\n", bobsID)
 
 	// Step 3: Read Bob's initial balance for the before/after comparison.
-	bobsInitialBalance, err := hiero.NewAccountBalanceQuery().
+	bobsInitialBalance, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(bobsID).
 		Execute(client)
 	if err != nil {
@@ -117,7 +117,7 @@ func main() {
 
 	// Step 5: Confirm Bob's balance hasn't changed — the schedule is pending
 	// because Bob's signature is still missing.
-	balancePending, err := hiero.NewAccountBalanceQuery().
+	balancePending, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(bobsID).
 		Execute(client)
 	if err != nil {
@@ -165,7 +165,7 @@ func main() {
 	}
 
 	// Step 8: Confirm Bob's balance now reflects the transfer.
-	balanceAfter, err := hiero.NewAccountBalanceQuery().
+	balanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(bobsID).
 		Execute(client)
 	if err != nil {

@@ -186,7 +186,7 @@ func main() {
 	 * of the token that was created was not charged a custom fee in the transfer
 	 */
 
-	firstAccountBalanceAfter, err := hiero.NewAccountBalanceQuery().
+	firstAccountBalanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(firstAccountId).
 		Execute(client)
 	if err != nil {
@@ -194,7 +194,7 @@ func main() {
 	}
 	fmt.Println("first's balance:", firstAccountBalanceAfter.Tokens.Get(tokenId))
 
-	secondAccountBalanceAfter, err := hiero.NewAccountBalanceQuery().
+	secondAccountBalanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(secondAccountId).
 		Execute(client)
 	if err != nil {
@@ -202,7 +202,7 @@ func main() {
 	}
 	fmt.Println("second's balance:", secondAccountBalanceAfter.Tokens.Get(tokenId))
 
-	thirdAccountBalanceAfter, err := hiero.NewAccountBalanceQuery().
+	thirdAccountBalanceAfter, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(thirdAccountId).
 		Execute(client)
 	if err != nil {

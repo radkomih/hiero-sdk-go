@@ -99,7 +99,7 @@ func main() {
 	println("Bob's ID:", bobID.String())
 	println("Charlie's ID:", charlieID.String())
 	println("Initial Balance:")
-	err = printBalance(client, aliceID, bobID, charlieID, []hiero.AccountID{transactionResponse.NodeID})
+	err = printBalance(client, aliceID, bobID, charlieID)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error retrieving balances", err))
 	}
@@ -126,7 +126,7 @@ func main() {
 		panic(fmt.Sprintf("%v : error getting account allowance receipt", err))
 	}
 
-	err = printBalance(client, aliceID, bobID, charlieID, []hiero.AccountID{transactionResponse.NodeID})
+	err = printBalance(client, aliceID, bobID, charlieID)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error retrieving balances", err))
 	}
@@ -156,7 +156,7 @@ func main() {
 	}
 
 	println("Transfer succeeded. Bob should now have 1 Hbar left in his allowance.")
-	err = printBalance(client, aliceID, bobID, charlieID, []hiero.AccountID{transactionResponse.NodeID})
+	err = printBalance(client, aliceID, bobID, charlieID)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error retrieving balances", err))
 	}
@@ -208,7 +208,7 @@ func main() {
 		panic(fmt.Sprintf("%v : error retrieving account allowance adjust receipt", err))
 	}
 
-	err = printBalance(client, aliceID, bobID, charlieID, []hiero.AccountID{transactionResponse.NodeID})
+	err = printBalance(client, aliceID, bobID, charlieID)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error retrieving balances", err))
 	}
@@ -239,7 +239,7 @@ func main() {
 	}
 
 	println("Transfer succeeded.")
-	err = printBalance(client, aliceID, bobID, charlieID, []hiero.AccountID{transactionResponse.NodeID})
+	err = printBalance(client, aliceID, bobID, charlieID)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error retrieving balances", err))
 	}
@@ -361,30 +361,27 @@ func main() {
 	}
 }
 
-func printBalance(client *hiero.Client, alice hiero.AccountID, bob hiero.AccountID, charlie hiero.AccountID, nodeID []hiero.AccountID) error {
+func printBalance(client *hiero.Client, alice hiero.AccountID, bob hiero.AccountID, charlie hiero.AccountID) error {
 	println()
 
-	balance, err := hiero.NewAccountBalanceQuery().
+	balance, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(alice).
-		SetNodeAccountIDs(nodeID).
 		Execute(client)
 	if err != nil {
 		return err
 	}
 	println("Alice's balance:", balance.Hbars.String())
 
-	balance, err = hiero.NewAccountBalanceQuery().
+	balance, err = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(bob).
-		SetNodeAccountIDs(nodeID).
 		Execute(client)
 	if err != nil {
 		return err
 	}
 	println("Bob's balance:", balance.Hbars.String())
 
-	balance, err = hiero.NewAccountBalanceQuery().
+	balance, err = hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(charlie).
-		SetNodeAccountIDs(nodeID).
 		Execute(client)
 	if err != nil {
 		return err

@@ -67,7 +67,7 @@ func TestIntegrationTokenClaimAirdropCanExecute(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify the receiver holds the tokens via query
-	reciverBalance, err := NewAccountBalanceQuery().
+	reciverBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(receiver).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -76,7 +76,7 @@ func TestIntegrationTokenClaimAirdropCanExecute(t *testing.T) {
 	require.Equal(t, uint64(2), reciverBalance.Tokens.Get(nftID))
 
 	// Verify the operator does not hold the tokens
-	operatorBalance, err := NewAccountBalanceQuery().
+	operatorBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(env.OperatorID).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -153,7 +153,7 @@ func TestIntegrationTokenClaimAirdropMultipleReceivers(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify the receiver1 holds the tokens via query
-	reciverBalance, err := NewAccountBalanceQuery().
+	reciverBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(receiver1).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -162,7 +162,7 @@ func TestIntegrationTokenClaimAirdropMultipleReceivers(t *testing.T) {
 	require.Equal(t, uint64(2), reciverBalance.Tokens.Get(nftID))
 
 	// Verify the receiver2 holds the tokens via query
-	reciverBalance, err = NewAccountBalanceQuery().
+	reciverBalance, err = NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(receiver2).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -171,7 +171,7 @@ func TestIntegrationTokenClaimAirdropMultipleReceivers(t *testing.T) {
 	require.Equal(t, uint64(2), reciverBalance.Tokens.Get(nftID))
 
 	// Verify the operator does not hold the tokens
-	operatorBalance, err := NewAccountBalanceQuery().
+	operatorBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(env.OperatorID).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -258,7 +258,7 @@ func TestIntegrationTokenClaimAirdropMultipleAirdropTxns(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify the receiver holds the tokens via query
-	reciverBalance, err := NewAccountBalanceQuery().
+	reciverBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(receiver).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -267,7 +267,7 @@ func TestIntegrationTokenClaimAirdropMultipleAirdropTxns(t *testing.T) {
 	require.Equal(t, uint64(2), reciverBalance.Tokens.Get(nftID))
 
 	// Verify the operator does not hold the tokens
-	operatorBalance, err := NewAccountBalanceQuery().
+	operatorBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(env.OperatorID).
 		Execute(env.Client)
 	require.NoError(t, err)

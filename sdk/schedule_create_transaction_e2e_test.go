@@ -783,14 +783,14 @@ func TestIntegrationScheduleCreateTransactionWaitForExpiry(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, scheduleInfo.ExecutedAt)
 
-	accountBalanceBefore, err := NewAccountBalanceQuery().
+	accountBalanceBefore, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(accountId).
 		Execute(env.Client)
 	require.NoError(t, err)
 
 	time.Sleep(5 * time.Second)
 
-	accountBalanceAfter, err := NewAccountBalanceQuery().
+	accountBalanceAfter, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(accountId).
 		Execute(env.Client)
 	require.NoError(t, err)

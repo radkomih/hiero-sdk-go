@@ -10,6 +10,8 @@ import (
 
 // AccountBalanceQuery gets the balance of a CryptoCurrency account. This returns only the balance, so it is a smaller
 // and faster reply than AccountInfoQuery, which returns the balance plus additional information.
+//
+// Deprecated: AccountBalanceQuery is no longer supported. Use MirrorNodeAccountBalanceQuery or the mirror node REST API (GET /api/v1/accounts/{id}) to retrieve account balances.
 type AccountBalanceQuery struct {
 	Query
 	accountID  *AccountID
@@ -20,7 +22,11 @@ type AccountBalanceQuery struct {
 // an AccountBalanceQuery.
 // It is recommended that you use this for creating new instances of an AccountBalanceQuery
 // instead of manually creating an instance of the struct.
+//
+// Deprecated: AccountBalanceQuery is no longer supported. Use MirrorNodeAccountBalanceQuery or the mirror node REST API (GET /api/v1/accounts/{id}) to retrieve account balances.
 func NewAccountBalanceQuery() *AccountBalanceQuery {
+	NewLogger("AccountBalanceQuery", LoggerLevelWarn).
+		Warn(accountBalanceQueryDeprecatedMessage)
 	header := services.QueryHeader{}
 	return &AccountBalanceQuery{
 		Query: _NewQuery(false, &header),
@@ -69,26 +75,18 @@ func (q *AccountBalanceQuery) GetContractID() ContractID {
 	return *q.contractID
 }
 
+// Deprecated: AccountBalanceQuery is no longer supported. Use MirrorNodeAccountBalanceQuery or the mirror node REST API (GET /api/v1/accounts/{id}) to retrieve account balances.
+// Returns an error immediately without any network request.
 func (q *AccountBalanceQuery) GetCost(client *Client) (Hbar, error) {
-	return q.Query.getCost(client, q)
+	return Hbar{}, errAccountBalanceQueryDeprecated
 }
 
 // Execute executes the query with the provided client
+//
+// Deprecated: AccountBalanceQuery is no longer supported. Use MirrorNodeAccountBalanceQuery or the mirror node REST API (GET /api/v1/accounts/{id}) to retrieve account balances.
+// Returns an error immediately without any network request.
 func (q *AccountBalanceQuery) Execute(client *Client) (AccountBalance, error) {
-	if client == nil {
-		return AccountBalance{}, errNoClientProvided
-	}
-
-	err := q.validateNetworkOnIDs(client)
-	if err != nil {
-		return AccountBalance{}, err
-	}
-
-	resp, err := q.Query.execute(client, q)
-	if err != nil {
-		return AccountBalance{}, err
-	}
-	return _AccountBalanceFromProtobuf(resp.GetCryptogetAccountBalance()), nil
+	return AccountBalance{}, errAccountBalanceQueryDeprecated
 }
 
 // SetMaxQueryPayment sets the maximum payment allowed for this query.

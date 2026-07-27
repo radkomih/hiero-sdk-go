@@ -393,7 +393,7 @@ func TestIntegrationRevenueGeneratingTopicCanChargeTokensWithLimit(t *testing.T)
 	env.Client.SetOperator(env.OperatorID, env.OperatorKey)
 
 	// Verify the custom fee charged
-	accountBalance, err := NewAccountBalanceQuery().
+	accountBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(payerId).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -458,7 +458,7 @@ func TestIntegrationRevenueGeneratingTopicCanChargeTokensWithoutLimit(t *testing
 	env.Client.SetOperator(env.OperatorID, env.OperatorKey)
 
 	// Verify the custom fee charged
-	accountBalance, err := NewAccountBalanceQuery().
+	accountBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(payerId).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -589,7 +589,7 @@ func TestIntegrationRevenueGeneratingTopicDoesNotChargeTokensFeeExemptKeys(t *te
 	env.Client.SetOperator(env.OperatorID, env.OperatorKey)
 
 	// Verify the custom fee is not charged
-	accountBalance, err := NewAccountBalanceQuery().
+	accountBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(payerId).
 		Execute(env.Client)
 	require.NoError(t, err)
@@ -836,7 +836,7 @@ func TestIntegrationRevenueGeneratingTopicDoesNotChargeTreasuries(t *testing.T) 
 	env.Client.SetOperator(env.OperatorID, env.OperatorKey)
 
 	// Verify the custom did not charge
-	accountBalance, err := NewAccountBalanceQuery().
+	accountBalance, err := NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(payerId).
 		Execute(env.Client)
 	require.NoError(t, err)

@@ -258,7 +258,7 @@ func main() {
 	 *
 	 * Show the new account ID owns the fungible token
 	 */
-	accountBalances, err := hiero.NewAccountBalanceQuery().SetAccountID(aliasAccountId2).Execute(client)
+	accountBalances, err := hiero.NewMirrorNodeAccountBalanceQuery().SetAccountID(aliasAccountId2).Execute(client)
 	if err != nil {
 		panic(fmt.Sprintf("%v : error receiving account balance", err))
 	}

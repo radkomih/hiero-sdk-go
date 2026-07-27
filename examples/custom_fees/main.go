@@ -289,7 +289,7 @@ func main() {
 
 	// Check alice's balance before Bob transfers 20 tokens to Charlie
 	// This is a free query
-	aliceBalance1, err := hiero.NewAccountBalanceQuery().
+	aliceBalance1, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(aliceId).
 		Execute(client)
 	if err != nil {
@@ -323,7 +323,7 @@ func main() {
 	}
 
 	// Query to check alice's balance
-	aliceBalance2, err := hiero.NewAccountBalanceQuery().
+	aliceBalance2, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(aliceId).
 		Execute(client)
 	if err != nil {
@@ -395,7 +395,7 @@ func main() {
 	}
 
 	// Another account balance query to check alice's token balance before Bob transfers 20 tokens to Charlie
-	aliceBalance3, err := hiero.NewAccountBalanceQuery().
+	aliceBalance3, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(aliceId).
 		Execute(client)
 	if err != nil {
@@ -426,7 +426,7 @@ func main() {
 	}
 
 	// Checking alice's token balance again
-	aliceBalance4, err := hiero.NewAccountBalanceQuery().
+	aliceBalance4, err := hiero.NewMirrorNodeAccountBalanceQuery().
 		SetAccountID(aliceId).
 		Execute(client)
 	if err != nil {
